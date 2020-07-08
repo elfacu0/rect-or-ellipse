@@ -7,6 +7,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+}
+.header {
+    top: 10px;
+    color: #7c05f2;
 }
 
 canvas {
