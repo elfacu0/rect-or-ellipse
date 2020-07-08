@@ -88,26 +88,27 @@ function eraseShape() {
 function trainClassifier() {
     let inputs = [];
     if (!currentShape || !Array.isArray(currentShape.lines)) return '';
-    let increment = Math.ceil(currentShape.lines.length / 20);
+    let increment = Math.floor(currentShape.lines.length / 20);
 
     for (let i = 0; i < currentShape.lines.length; i += increment) {
-        if (currentShape.maxValue < 10) continue;
+        if (currentShape.maxValue < 1) continue;
+        if (inputs.length > 80) break;
         inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].x0);
         inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].y0);
         inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].x1);
         inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].y1);
     }
 
+    console.log(currentShape);
+
     console.log(inputs);
     if (state === 'training') {
         if (mouseX < width / 2) {
-            console.log('Rect');
             let target = {
                 label: 'Rect',
             };
             model.addData(inputs, target);
         } else {
-            console.log('Ellipse');
             let target = {
                 label: 'Ellipse',
             };
