@@ -14,33 +14,12 @@ class Shape {
             x1: line.x1 - this.startPos.x1,
             y1: line.y1 - this.startPos.y1,
         });
-        if (line.x0 < this.minPos.x) {
-            this.minPos.x = line.x0;
-        }
-        if (line.x0 > this.maxPos.x) {
-            this.maxPos.x = line.x0;
-        }
 
-        if (line.x1 < this.minPos.x) {
-            this.minPos.x = line.x1;
-        }
-        if (line.x1 > this.maxPos.x) {
-            this.maxPos.x = line.x1;
-        }
+        this.minPos.x = Math.min(line.x0, line.x1, this.minPos.x);
+        this.maxPos.x = Math.max(line.x0, line.x1, this.maxPos.x);
 
-        if (line.y0 < this.minPos.y) {
-            this.minPos.y = line.y0;
-        }
-        if (line.y0 > this.maxPos.y) {
-            this.maxPos.y = line.y0;
-        }
-
-        if (line.y1 < this.minPos.y) {
-            this.minPos.y = line.y1;
-        }
-        if (line.y1 > this.maxPos.y) {
-            this.maxPos.y = line.y1;
-        }
+        this.minPos.y = Math.min(line.y0, line.y1, this.minPos.y);
+        this.maxPos.y = Math.max(line.y0, line.y1, this.maxPos.y);
     }
 
     draw() {

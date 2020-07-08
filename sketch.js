@@ -1,11 +1,13 @@
 let model;
-
 let currentShape;
 // let state = 'training';
 let state = 'prediction';
 let isDrawing = false;
-
 let shapes = new Shapes();
+const button = document.querySelector('#clear-button');
+button.addEventListener('click', () => {
+    shapes = new Shapes();
+});
 
 function setup() {
     createCanvas(400, 400);
@@ -33,7 +35,7 @@ function setup() {
 function draw() {
     background(220);
     stroke(100);
-    if (mouseIsPressed && currentShape) {
+    if (mouseIsPressed && isDrawing) {
         currentShape.draw();
     }
     if (state === 'training') {
@@ -46,14 +48,16 @@ function draw() {
 }
 
 function mousePressed() {
-    if (isDrawing === false) {
-        currentShape = new Shape({
-            x0: mouseX,
-            y0: mouseY,
-            x1: pmouseX,
-            y1: pmouseY,
-        });
-        isDrawing = true;
+    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+        if (isDrawing === false) {
+            currentShape = new Shape({
+                x0: mouseX,
+                y0: mouseY,
+                x1: pmouseX,
+                y1: pmouseY,
+            });
+            isDrawing = true;
+        }
     }
 }
 
@@ -77,7 +81,7 @@ function mouseReleased() {
 }
 
 function eraseShape() {
-    currentShape = [];
+    currentShape = {};
 }
 
 function trainClassifier() {
@@ -95,14 +99,12 @@ function trainClassifier() {
     if (state === 'training') {
         if (mouseX < width / 2) {
             console.log('Rect');
-
             let target = {
                 label: 'Rect',
             };
             model.addData(inputs, target);
         } else {
             console.log('Ellipse');
-
             let target = {
                 label: 'Ellipse',
             };
