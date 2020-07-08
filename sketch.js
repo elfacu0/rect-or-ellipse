@@ -2,6 +2,7 @@ let model;
 let currentShape;
 // let state = 'training';
 let state = 'prediction';
+
 let isDrawing = false;
 let shapes = new Shapes();
 const button = document.querySelector('#clear-button');
@@ -88,11 +89,13 @@ function trainClassifier() {
     let inputs = [];
     if (!currentShape || !Array.isArray(currentShape.lines)) return '';
     let increment = Math.ceil(currentShape.lines.length / 20);
+
     for (let i = 0; i < currentShape.lines.length; i += increment) {
-        inputs.push(currentShape.lines[i].x0);
-        inputs.push(currentShape.lines[i].y0);
-        inputs.push(currentShape.lines[i].x1);
-        inputs.push(currentShape.lines[i].y1);
+        if (currentShape.maxValue < 10) continue;
+        inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].x0);
+        inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].y0);
+        inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].x1);
+        inputs.push((200 / currentShape.maxValue) * currentShape.lines[i].y1);
     }
 
     console.log(inputs);
@@ -119,7 +122,7 @@ function keyPressed() {
     if (key === 't') {
         model.normalizeData();
         let options = {
-            batchSize: 64,
+            batchSize: 16,
             epochs: 300,
         };
         model.train(options, whileTraining, finishedTraining);
